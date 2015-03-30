@@ -31,34 +31,27 @@ public class HashMap implements IHashMapable {
             if (!hasFreeSpace) {
                 throw new Exception("Table is full.");
             } else {
-                int startFindFrom = code;
-                boolean isInserted = false;
-                boolean hasValueInNextPosition = false;
-                while (++startFindFrom <= MAX_SIZE) {
-                    hasValueInNextPosition = table[startFindFrom] == null;
+                int index;
+                if (code == MAX_SIZE - 1) {
+                    index = 0;
+                } else {
+                    index = code + 1;
+                }
 
-                    if (!hasValueInNextPosition) {
-                        //insert here
-                        table[startFindFrom] = toPut;
-                        isInserted = true;
-                        break;
+                while ((index != -1) && (index != code)) {
+                    if (table[index] == null) {
+                        table[index] = toPut;
+                        return true;
+                    }
+
+                    if (index == MAX_SIZE - 1) {
+                        index = 0;
+                    } else {
+                        index++;
                     }
                 }
 
-                if (!isInserted) {
-                    startFindFrom = 0;
-                    while (startFindFrom < code) {
-                        hasValueInNextPosition = table[++startFindFrom] == null;
-
-                        if (!hasValueInNextPosition) {
-                            table[startFindFrom] = toPut;
-                            isInserted = true;
-                            break;
-                        }
-                    }
-                }
-
-                return isInserted;
+                return false;
             }
         }
 
