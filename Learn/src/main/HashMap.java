@@ -4,18 +4,18 @@ public class HashMap implements IHashMapable {
 
     public HashableObject[] table = new HashableObject[MAX_SIZE];
 
-    public int getCode(int key) {
+    public int getIndex(int key) {
         return (key % MAX_SIZE);
     }
 
     @Override
     public boolean put(HashableObject toPut) throws Exception {
 
-        int code = getCode(toPut.getKey());
-        boolean hasValue = table[code] != null;
+        int index = getIndex(toPut.getKey());
+        boolean hasValue = table[index] != null;
 
         if (!hasValue) {
-            table[code] = toPut;
+            table[index] = toPut;
             return true;
         } else {
             //check free space
@@ -24,23 +24,23 @@ public class HashMap implements IHashMapable {
             if (!hasFreeSpace) {
                 throw new Exception("Table is full.");
             } else {
-                int index;
-                if (code == MAX_SIZE - 1) {
-                    index = 0;
+                int probeIndex;
+                if (index == MAX_SIZE - 1) {
+                    probeIndex = 0;
                 } else {
-                    index = code + 1;
+                    probeIndex = index + 1;
                 }
 
-                while ((index != -1) && (index != code)) {
-                    if (table[index] == null) {
-                        table[index] = toPut;
+                while ((probeIndex != -1) && (probeIndex != index)) {
+                    if (table[probeIndex] == null) {
+                        table[probeIndex] = toPut;
                         return true;
                     }
 
-                    if (index == MAX_SIZE - 1) {
-                        index = 0;
+                    if (probeIndex == MAX_SIZE - 1) {
+                        probeIndex = 0;
                     } else {
-                        index++;
+                        probeIndex++;
                     }
                 }
 
@@ -66,37 +66,37 @@ public class HashMap implements IHashMapable {
 
     @Override
     public HashableObject get(int key) {
-        int code = getCode(key);
-        int index;
-        boolean hasValue = table[code] != null;
+        int index = getIndex(key);
+        int probeIndex;
+        boolean hasValue = table[index] != null;
 
         if (!hasValue) {
             return null;
         }
 
 
-        if (table[code].getKey() == key) {
-            return table[code];
+        if (table[index].getKey() == key) {
+            return table[index];
         }
 
-        index = code == MAX_SIZE - 1 ? 0 : code + 1;
+        probeIndex = index == MAX_SIZE - 1 ? 0 : index + 1;
 
-        while ((index != -1) && (index != code)) {
+        while ((probeIndex != -1) && (probeIndex != index)) {
 
-            hasValue = table[index] != null;
+            hasValue = table[probeIndex] != null;
 
             if (!hasValue) {
                 return null;
             }
 
-            if (table[index].getKey() == key) {
-                return table[index];
+            if (table[probeIndex].getKey() == key) {
+                return table[probeIndex];
             }
 
-            if (index == MAX_SIZE - 1) {
-                index = 0;
+            if (probeIndex == MAX_SIZE - 1) {
+                probeIndex = 0;
             } else {
-                index++;
+                probeIndex++;
             }
         }
         return null;
