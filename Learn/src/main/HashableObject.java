@@ -1,4 +1,4 @@
-
+package main;
 public class HashableObject {
 
     public Integer getKey() {

@@ -1,11 +1,4 @@
-interface IHashMapable {
-    boolean put(HashableObject toPut) throws Exception;
-
-    int size();
-
-    HashableObject get(int code);
-}
-
+package main;
 public class HashMap implements IHashMapable {
     public final int MAX_SIZE = 1000;
 
