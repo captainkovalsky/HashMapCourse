@@ -22,9 +22,6 @@ public class HashMapTest {
     @Test
     public void testEmptySize() throws Exception {
         IHashMapable map = new HashMap();
-        HashableObject obj = new HashableObject((long) 343.3, 3);
-
-        map.put(obj);
         assertEquals(0, map.size());
     }
 
