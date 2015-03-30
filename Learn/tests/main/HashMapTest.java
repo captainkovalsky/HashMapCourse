@@ -48,4 +48,24 @@ public class HashMapTest {
         assertTrue(retrieved.getKey() == key); //@TODO: equals should be overriden
         assertTrue(retrieved.getValue() == value);
     }
+
+    @Test
+    public void testGetWithCollisions() throws Exception {
+        IHashMapable map = new HashMap();
+        int key = 3;
+
+        map.put(new HashableObject((long) 434.34, key));
+        map.put(new HashableObject((long) 666.66, key));
+
+        assertEquals(2, map.size());
+
+        HashableObject retrieved = map.get(key);
+
+        assertTrue(retrieved != null);
+//        System.out.println(retrieved.getKey());
+//        System.out.println(retrieved.getValue());
+
+        assertTrue(retrieved.getKey() == key); //@TODO: equals should be overriden
+        assertTrue(retrieved.getValue() == (long) 666.66);
+    }
 }
